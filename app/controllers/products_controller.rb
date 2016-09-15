@@ -24,12 +24,24 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @product.to_json(only: [:id, :name, :description, :inventory, :price]) }
+    end
   end
 
-  def data
-    product = Product.find(params[:id])
-    render json: ProductSerializer.serialize(product)
-  end
+  # def data
+  #   product = Product.find(params[:id])
+  #   #render json: ProductSerializer.serialize(product)
+  #   render json: product.to_json(only: [:id, :name, :description, :inventory, :price])
+  #
+  #   #Remove the old products/:id/data route and action and set products#show to render JSON or HTML depending on the format of the request.
+  #
+  #   #  has_many :ordered_products
+  #   #  has_many :orders, :through => :ordered_products
+  #
+  #   #id, name, description, inventory and price
+  # end
 
   private
 
